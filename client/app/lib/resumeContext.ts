@@ -23,14 +23,6 @@ export const getResumeContext = () => {
       .map(([category, list]) => `${category}: ${list.join(", ")}`)
       .join("\n");
 
-   const testimonialsText = ragContext.testimonials
-      ? ragContext.testimonials.map((t) => `"${t.quote}" - ${t.name}, ${t.role}`).join("\n")
-      : "";
-
-   const caseStudiesText = ragContext.caseStudies
-      ? ragContext.caseStudies.map((c) => `**${c.title}**: ${c.description}`).join("\n\n")
-      : "";
-
    const achievementsText = ragContext.achievements
       ? ragContext.achievements.map((a) => `- ${a}`).join("\n")
       : "";
@@ -138,25 +130,8 @@ ${skillsText}
 
 ---
 
-## 🗣 Testimonials
-${testimonialsText}
-
----
-
----
-
-## 💼 Case Studies
-${caseStudiesText}
-
----
-
 ## 🏆 Key Achievements
 ${achievementsText}
-
----
-
-## ✍️ Technical Writing & Documentation
-${ragContext.technicalWriting}
 
 ---
 
