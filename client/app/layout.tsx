@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://orlando-ascanio.com", // Placeholder, ideally should be the real domain
+    url: "https://personal-ai-assitant.vercel.app",
     title: "Orlando Ascanio | AI & Product Engineer",
     description: "Explore the portfolio and interactive AI assistant of Orlando Ascanio. specialized in building intelligent agents and scalable web systems.",
     siteName: "Orlando Ascanio Portfolio",
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     title: "Orlando Ascanio | AI & Product Engineer",
     description: "AI & Product Engineer building intelligent systems. Check out my interactive AI portfolio.",
     images: ["/banner.jpg"],
-    creator: "@orlandoascanio", // Assuming handle based on context, or generic
+    creator: "@orlandoascanio",
   },
   icons: {
     icon: "/logo.jpg",
@@ -71,7 +71,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.className} ${geistMono.className} antialiased`}
       >
         <I18nProvider>
           {children}
