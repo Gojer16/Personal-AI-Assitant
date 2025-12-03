@@ -88,16 +88,3 @@ export async function POST(req: Request) {
         return new Response("Internal Server Error", { status: 500 });
     }
 }
-
-return new Response(readable, {
-    headers: {
-        "Content-Type": "text/plain; charset=utf-8",
-        "Cache-Control": "no-cache",
-        "X-Accel-Buffering": "no",
-    },
-});
-    } catch (err) {
-    console.error("API Error:", err);
-    return new Response("Internal Server Error", { status: 500 });
-}
-}
