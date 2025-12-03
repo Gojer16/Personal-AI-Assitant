@@ -28,9 +28,11 @@ import {
 } from 'lucide-react';
 import { ragContext } from '@/app/lib/ragContext';
 import { detectLanguage } from '@/lib/i18n/languageDetection';
+import { useHtmlRenderer } from '@/lib/hooks/useHtmlRenderer';
 
 export default function EnhancedChatPage() {
   const { t, i18n } = useTranslation();
+  const { renderHtml } = useHtmlRenderer();
   const [messages, setMessages] = useState<{ id: string; role: 'user' | 'assistant'; content: string; timestamp: Date }[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -456,7 +458,7 @@ export default function EnhancedChatPage() {
                 </div>
               </div>
             ) : (
-              <div className="max-w-3xl mx-auto space-y-6">
+              <div className="max-w-4xl mx-auto space-y-6">
                 {messages.map((message) => (
                   <motion.div
                     key={message.id}
@@ -465,27 +467,36 @@ export default function EnhancedChatPage() {
                     className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
                     <div
-                      className={`max-w-[85%] md:max-w-[75%] rounded-2xl p-4 ${message.role === 'user'
+                      className={`max-w-[90%] md:max-w-[85%] rounded-2xl p-5 ${message.role === 'user'
                         ? 'bg-purple-600 text-white rounded-br-none'
-                        : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 rounded-bl-none'
+                        : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 rounded-bl-none shadow-sm'
                         }`}
                     >
-                      <div className="flex items-start gap-3">
-                        <div className={`p-2 rounded-lg ${message.role === 'user' ? 'bg-purple-700' : 'bg-zinc-200 dark:bg-zinc-700'}`}>
+                      <div className="flex items-start gap-4">
+                        <div className={`p-2 rounded-lg shrink-0 ${message.role === 'user' ? 'bg-purple-700' : 'bg-zinc-200 dark:bg-zinc-700'}`}>
                           {message.role === 'user' ? (
-                            <User className="w-4 h-4" />
+                            <User className="w-5 h-5" />
                           ) : (
-                            <Bot className="w-4 h-4" />
+                            <Bot className="w-5 h-5" />
                           )}
                         </div>
-                        <div className="flex-1">
-                          <p className="whitespace-pre-wrap">{message.content}</p>
+                        <div className="flex-1 min-w-0">
+                          <div
+                            className="prose prose-sm max-w-none dark:prose-invert text-base leading-relaxed
+                              prose-p:mb-4 prose-p:last:mb-0
+                              prose-ul:my-4 prose-ul:space-y-2
+                              prose-ol:my-4 prose-ol:space-y-2
+                              prose-li:my-1
+                              prose-h3:mt-6 prose-h3:mb-3 prose-h3:text-lg prose-h3:font-semibold
+                              prose-h4:mt-4 prose-h4:mb-2 prose-h4:text-base prose-h4:font-semibold"
+                            dangerouslySetInnerHTML={renderHtml(message.content)}
+                          />
                         </div>
                         <Button
                           variant="ghost"
                           size="sm"
                           onClick={() => copyMessage(message.content, message.id)}
-                          className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                          className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity shrink-0"
                         >
                           {copiedId === message.id ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                         </Button>
@@ -502,10 +513,10 @@ export default function EnhancedChatPage() {
                     animate={{ opacity: 1, y: 0 }}
                     className="flex justify-start"
                   >
-                    <div className="max-w-[75%] bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 rounded-2xl rounded-bl-none p-4">
-                      <div className="flex items-center gap-3">
+                    <div className="max-w-[85%] bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 rounded-2xl rounded-bl-none p-5 shadow-sm">
+                      <div className="flex items-center gap-4">
                         <div className="p-2 rounded-lg bg-zinc-200 dark:bg-zinc-700">
-                          <Bot className="w-4 h-4" />
+                          <Bot className="w-5 h-5" />
                         </div>
                         <div className="flex space-x-2">
                           <div className="w-2 h-2 rounded-full bg-zinc-400 animate-bounce"></div>
@@ -523,7 +534,7 @@ export default function EnhancedChatPage() {
 
           {/* Input Area */}
           <div className="border-t border-zinc-200 dark:border-zinc-800 p-4 bg-white dark:bg-zinc-900">
-            <div className="max-w-3xl mx-auto">
+            <div className="max-w-4xl mx-auto">
               <div className="flex gap-2">
                 <Input
                   value={inputValue}

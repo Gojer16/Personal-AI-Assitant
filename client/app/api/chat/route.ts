@@ -1,6 +1,5 @@
 import { GoogleGenAI } from "@google/genai";
 import { getResumeContext } from "@/app/lib/resumeContext";
-import { filterResponseContent } from "@/lib/filter";
 import { getLanguageSystemPrompt } from "@/lib/i18n/languageDetection";
 
 export const maxDuration = 30;
@@ -70,8 +69,8 @@ export async function POST(req: Request) {
         const readable = new ReadableStream({
             async start(controller) {
                 for await (const chunk of stream) {
-                    const filteredText = filterResponseContent(chunk.text || "");
-                    controller.enqueue(encoder.encode(filteredText));
+                    // Send raw HTML response without filtering
+                    controller.enqueue(encoder.encode(chunk.text || ""));
                 }
                 controller.close();
             },
@@ -88,4 +87,17 @@ export async function POST(req: Request) {
         console.error("API Error:", err);
         return new Response("Internal Server Error", { status: 500 });
     }
+}
+
+return new Response(readable, {
+    headers: {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Cache-Control": "no-cache",
+        "X-Accel-Buffering": "no",
+    },
+});
+    } catch (err) {
+    console.error("API Error:", err);
+    return new Response("Internal Server Error", { status: 500 });
+}
 }
