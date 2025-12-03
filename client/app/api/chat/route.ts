@@ -70,7 +70,7 @@ export async function POST(req: Request) {
         const readable = new ReadableStream({
             async start(controller) {
                 for await (const chunk of stream) {
-                    const filteredText = filterResponseContent(chunk.text);
+                    const filteredText = filterResponseContent(chunk.text || "");
                     controller.enqueue(encoder.encode(filteredText));
                 }
                 controller.close();
